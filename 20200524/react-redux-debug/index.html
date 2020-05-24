@@ -7,12 +7,29 @@
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/7.2.0/react-redux.min.js"></script>
 
 <script type="text/babel">
+const timer = (startAt, endAt) => {
+    console.log("init timer");
+
+    const interval = setInterval(() => {
+        const now = Date.now();
+
+        console.log("interval", {
+            time: ((now - startAt) / 1000).toFixed(1),
+        });
+
+        if (!!endAt) {
+            console.log("END");
+
+            clearInterval(interval);
+        }
+    }, 100);
+};
+
 class App extends React.Component {
     render() {
-        console.log({
-            startAt: this.props.startAt,
-            endAt: this.props.endAt,
-        });
+        if (this.props.startAt) {
+            timer(this.props.startAt, this.props.endAt);
+        }
 
         return (
             <button onClick={this.onButtonClickHandler.bind(this)}>Button</button>
