@@ -1,0 +1,68 @@
+<div id="app"></div>
+
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.5/redux.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/7.2.0/react-redux.min.js"></script>
+
+<script type="text/babel">
+class App extends React.Component {
+    render() {
+        console.log({
+            startAt: this.props.startAt,
+            endAt: this.props.endAt,
+        });
+
+        return (
+            <button onClick={this.onButtonClickHandler.bind(this)}>Button</button>
+        );
+    }
+
+    onButtonClickHandler() {
+        this.props.dispatch({
+            type: "CLICK_BUTTON",
+        })
+    }
+}
+
+const initialState = {
+    startAt: null,
+    endAt: null,
+};
+
+const reducer = (state = initialState, action) => {
+    if (action.type === "CLICK_BUTTON") {
+        if (!state.startAt) {
+            return {
+                ...state,
+                startAt: Date.now(),
+            }
+        } else if (!state.endAt) {
+            return {
+                ...state,
+                endAt: Date.now(),
+            }
+        }
+    }
+
+    return { ...state };
+};
+
+const store = Redux.createStore(reducer);
+
+const mapStateToProps = (state) => {
+    return { ...state };
+};
+
+const ReduxContainer = ReactRedux.connect(mapStateToProps)(App);
+
+ReactDOM.render(
+    (
+        <ReactRedux.Provider store={store}>
+            <ReduxContainer />
+        </ReactRedux.Provider>
+    ),
+    document.querySelector("#app")
+);
+</script>
